@@ -20,7 +20,7 @@ headers={
     'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; rv:48.0)'  
 } 
 session = requests.session()
-session.cookies = cookielib.LWPCookieJar()
+session.cookies = cookielib.LWPCookieJar()                           #这一行可以注释掉，没有影响
 req = session.get('https://www.douban.com/',headers=headers, allow_redirects=False)
 pattern = re.compile('<img id="captcha_image".*?id=(.*?)&',re.S)     #正则提取ID
 result = re.search(pattern,req.text)
@@ -37,7 +37,7 @@ checkCode = raw_input()
 formData["captcha-solution"]=checkCode        #表单中加入captcha-solution
 formData["captcha-id"]=id                     #同上
 session.post(loginUrl,data=formData,headers=headers)    #发送post请求
-url = "https://www.douban.com/people/90868630/"     #站内的测试链接，用来判断是否登入成功
+url = "https://www.douban.com/people/90868630/"     #站内的测试链接，用来判断是否登入成功（你要选你自己的链接，不能用我这个）
 code = session.get(url, headers=headers, allow_redirects=False)
 if code.status_code==200 :
     print u'登陆成功'
