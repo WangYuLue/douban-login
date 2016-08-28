@@ -1,7 +1,7 @@
 # douban-login
 requests 模拟登陆豆瓣 &amp; 有cookies与无cookies的区别 &amp; 一些猜想
 
-1、我试着将cookies去掉，然后登入成功。（但是没有cookies的登入成功也仅仅是登入成功，不能打开页面内的其他链接）
+1、我试着将cookies去掉（也就是没有建立一个session），然后登入成功。（但是没有cookies的登入成功也仅仅是登入成功，不能打开页面内的其他链接）
 
 2、有趣的是，在cmd下，将一个cmd中获取的验证码和验证码ID放到另一个cmd中运行，依旧成功。
 
