@@ -1,0 +1,39 @@
+# -*- encoding:utf-8 -*-  
+import urllib2  
+import urllib  
+import re  
+import cookielib  
+import requests  
+from PIL import Image  
+import cStringIO
+
+loginUrl = 'https://www.douban.com/accounts/login'  
+formData={    
+    "form_email":'这里写你的账号',  
+    "form_password":'这里写你的密码' ,
+    'source':'index_nav'
+}  
+headers={  
+    'Accept'    : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',   
+    'Host' : 'www.douban.com',  
+    'Referer' : 'https://www.douban.com/',  
+    'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; rv:48.0)'  
+} 
+req = requests.get(loginUrl,headers=headers, allow_redirects=False)
+pattern = re.compile('<img id="captcha_image".*?id=(.*?)&',re.S)
+result = re.search(pattern,req.text)
+id = result.group(1)
+pattern = re.compile('<img id="captcha_image".*?src="(.*?) alt="captcha',re.S)
+result = re.search(pattern,req.text)
+imageURL = result.group(1).strip()
+request=urllib2.Request(imageURL,headers=headers)
+respHtml = urllib2.urlopen(request).read()
+img = Image.open(cStringIO.StringIO(respHtml))  
+print u'请输入你看到的字母'
+img.show()  
+checkCode = raw_input()
+formData["captcha-solution"]=checkCode
+formData["captcha-id"]=id
+code = requests.post(loginUrl,data=formData,headers=headers)
+f=open(r'douban.txt','w+')             
+f.write(code.text.encode('utf-8')) #偷个懒，写入douban.txt文件中，自己去对照吧，哇哈哈
